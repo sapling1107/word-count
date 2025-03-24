@@ -5,10 +5,14 @@ function isChinese(char) {
 function isPunctuation(char) {
   return /[，。！？、；：「」『』（）《》【】⋯…—·•・,.!?;:'"()\[\]{}]/.test(char);
 }
+function isDigit(char) {
+  return /[0-9０-９]/.test(char); // 半形與全形數字
+}
 function countWords(text) {
   let chineseCount = 0;
   let englishWords = 0;
   let punctuationCount = 0;
+  let digitCount = 0;
   let wordBuffer = "";
 
   const SPECIAL_SYMBOLS = {
@@ -35,15 +39,18 @@ function countWords(text) {
       }
       if (isPunctuation(char)) {
         punctuationCount++;
+      } else if (isDigit(char)) {
+        digitCount++;
       }
     }
   }
   if (wordBuffer.length > 0) englishWords++;
-  const total = chineseCount + englishWords + punctuationCount;
+  const total = chineseCount + englishWords + punctuationCount + digitCount;
   return {
     chineseCount,
     englishWords,
     punctuationCount,
+    digitCount,
     total,
   };
 }
@@ -71,6 +78,7 @@ function updateResult(text) {
     中文字數：${result.chineseCount}
     英文單字數：${result.englishWords}
     標點符號數：${result.punctuationCount}
+    數字字元數：${result.digitCount}
     -----------------------------
     總字數：${result.total}
     ${commonWordsText}
