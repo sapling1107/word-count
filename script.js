@@ -3,7 +3,7 @@ function isChinese(char) {
   return /[\u4e00-\u9fff]/.test(char);
 }
 function isPunctuation(char) {
-  return /[，。！？、；：「」『』（）《》【】⋯…—,.!?;:'"()\[\]{}]/.test(char);
+  return /[，。！？、；：「」『』（）《》【】⋯…—·•・,.!?;:'"()\[\]{}]/.test(char);
 }
 function countWords(text) {
   let chineseCount = 0;
@@ -11,7 +11,7 @@ function countWords(text) {
   let punctuationCount = 0;
   let wordBuffer = "";
 
-  // 特殊符號處理：省略號、破折號
+  // 特殊符號處理：省略號、破折號、組合中點
   const SPECIAL_SYMBOLS = {
     "……": 2,
     "——": 2,
