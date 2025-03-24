@@ -1,9 +1,9 @@
 
 function isChinese(char) {
-  return /[一-鿿]/.test(char);
+  return /[\u4e00-\u9fff]/.test(char);
 }
 function isPunctuation(char) {
-  return /[，。！？、；：「」『』（）《》【】,.!?;:'"()\[\]{}]/.test(char);
+  return /[，。！？、；：「」『』（）《》【】⋯…—,.!?;:'"()\[\]{}]/.test(char);
 }
 function countWords(text) {
   let chineseCount = 0;
@@ -11,16 +11,17 @@ function countWords(text) {
   let punctuationCount = 0;
   let wordBuffer = "";
 
+  // 特殊符號處理：省略號、破折號
   const SPECIAL_SYMBOLS = {
     "……": 2,
     "——": 2,
+    "⋯⋯": 2,
   };
 
-  // 特殊符號處理
   for (let symbol in SPECIAL_SYMBOLS) {
     let count = text.split(symbol).length - 1;
     punctuationCount += count * SPECIAL_SYMBOLS[symbol];
-    text = text.split(symbol).join(""); // 避免重複計算
+    text = text.split(symbol).join(""); // 移除處理過的符號
   }
 
   for (let char of text) {
@@ -47,6 +48,7 @@ function countWords(text) {
     total,
   };
 }
+
 function updateResult(text) {
   const result = countWords(text);
   document.getElementById("result").innerHTML = `
@@ -56,6 +58,7 @@ function updateResult(text) {
     <p><strong>總字數：</strong>${result.total}</p>
   `;
 }
+
 document.getElementById("textInput").addEventListener("input", function () {
   updateResult(this.value);
 });
