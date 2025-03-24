@@ -11,7 +11,6 @@ function countWords(text) {
   let punctuationCount = 0;
   let wordBuffer = "";
 
-  // 特殊符號處理：省略號、破折號、組合中點
   const SPECIAL_SYMBOLS = {
     "……": 2,
     "——": 2,
@@ -21,7 +20,7 @@ function countWords(text) {
   for (let symbol in SPECIAL_SYMBOLS) {
     let count = text.split(symbol).length - 1;
     punctuationCount += count * SPECIAL_SYMBOLS[symbol];
-    text = text.split(symbol).join(""); // 移除處理過的符號
+    text = text.split(symbol).join("");
   }
 
   for (let char of text) {
@@ -49,13 +48,32 @@ function countWords(text) {
   };
 }
 
+function countCommonWords(text) {
+  const commonWords = ["的", "了", "地", "著", "是", "也", "而"];
+  const stats = {};
+  for (let word of commonWords) {
+    const count = (text.split(word).length - 1);
+    if (count > 0) stats[word] = count;
+  }
+  return stats;
+}
+
 function updateResult(text) {
   const result = countWords(text);
+  const commonWordStats = countCommonWords(text);
+
+  let commonWordsText = "\n====== 常見詞統計 ======\n";
+  for (let word in commonWordStats) {
+    commonWordsText += `「${word}」：${commonWordStats[word]} 次\n`;
+  }
+
   document.getElementById("result").innerHTML = `
-    <p>中文字數：${result.chineseCount}</p>
-    <p>英文單字數：${result.englishWords}</p>
-    <p>標點符號數：${result.punctuationCount}</p>
-    <p><strong>總字數：</strong>${result.total}</p>
+    中文字數：${result.chineseCount}
+    英文單字數：${result.englishWords}
+    標點符號數：${result.punctuationCount}
+    -----------------------------
+    總字數：${result.total}
+    ${commonWordsText}
   `;
 }
 

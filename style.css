@@ -19,6 +19,7 @@ textarea {
 #result {
   margin-top: 20px;
   font-size: 18px;
+  white-space: pre-wrap;
 }
 .buttons {
   margin-top: 10px;
